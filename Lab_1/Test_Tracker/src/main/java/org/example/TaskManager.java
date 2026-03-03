@@ -22,7 +22,6 @@ public class TaskManager {
     public void initializeQuestions(){
         logger.info("Initializing test questions");
 
-        // Создаем тест по истории
         Task historyTask = new Task("История");
 
         List<String> answers1 = new ArrayList<>();
@@ -33,7 +32,7 @@ public class TaskManager {
         historyTask.addQuestion(new Question(
                 "В каком году началась Великая Отечественная война?",
                 answers1,
-                2, // правильный ответ: 1941 год (индекс 2)
+                2,
                 10
         ));
 
@@ -45,7 +44,7 @@ public class TaskManager {
         historyTask.addQuestion(new Question(
                 "Кто основал Санкт-Петербург?",
                 answers2,
-                0, // правильный ответ: Петр I (индекс 0)
+                0,
                 15
         ));
 
@@ -57,13 +56,12 @@ public class TaskManager {
         historyTask.addQuestion(new Question(
                 "В каком году произошло Ледовое побоище?",
                 answers3,
-                0, // правильный ответ: 1240 год (индекс 0)
+                0,
                 15
         ));
 
         taskList.add(historyTask);
 
-        // Создаем тест по географии
         Task geographyTask = new Task("География");
 
         List<String> answers4 = new ArrayList<>();
@@ -74,7 +72,7 @@ public class TaskManager {
         geographyTask.addQuestion(new Question(
                 "Какая столица России?",
                 answers4,
-                0, // правильный ответ: Москва (индекс 0)
+                0,
                 10
         ));
 
@@ -86,7 +84,7 @@ public class TaskManager {
         geographyTask.addQuestion(new Question(
                 "Какая река является самой длинной в мире?",
                 answers5,
-                1, // правильный ответ: Нил (индекс 1)
+                1,
                 20
         ));
 
@@ -98,13 +96,12 @@ public class TaskManager {
         geographyTask.addQuestion(new Question(
                 "Какая страна имеет самую большую площадь?",
                 answers6,
-                0, // правильный ответ: Россия (индекс 0)
+                0,
                 15
         ));
 
         taskList.add(geographyTask);
 
-        // Создаем тест по литературе
         Task literatureTask = new Task("Литература");
 
         List<String> answers7 = new ArrayList<>();
@@ -115,7 +112,7 @@ public class TaskManager {
         literatureTask.addQuestion(new Question(
                 "Какое произведение написал Лев Толстой?",
                 answers7,
-                0, // правильный ответ: Война и мир (индекс 0)
+                0,
                 15
         ));
 
@@ -127,7 +124,7 @@ public class TaskManager {
         literatureTask.addQuestion(new Question(
                 "Кто написал 'Евгения Онегина'?",
                 answers8,
-                0, // правильный ответ: Александр Пушкин (индекс 0)
+                0,
                 15
         ));
 

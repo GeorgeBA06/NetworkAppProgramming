@@ -10,7 +10,7 @@ public class Question {
     private int rightAnswer;
     private int points;
 
-    Question(String question, List<String> answers, int rightAnswer, int points){
+    public Question(String question, List<String> answers, int rightAnswer, int points){
         this.question = question;
         this.answers = answers;
         this.rightAnswer = rightAnswer;

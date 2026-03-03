@@ -77,3 +77,54 @@
 12:08:26.896 INFO  org.example.TaskManager - User get 30 from 30
 12:08:26.897 INFO  org.example.TaskManager - User get excellent mark
 12:08:31.692 INFO  org.example.App - Program ended
+21:37:53.526 INFO  org.example.App - Program starts
+21:37:53.545 INFO  org.example.TaskManager - Initializing test questions
+21:37:53.560 INFO  org.example.TaskManager - Successfully initialized 3 tests
+21:46:06.421 INFO  org.example.App - Program starts
+21:46:06.428 INFO  org.example.TaskManager - Initializing test questions
+21:46:06.429 INFO  org.example.TaskManager - Successfully initialized 3 tests
+21:46:09.155 INFO  org.example.App - Program ended
+23:04:06.732 INFO  org.example.App - Program starts
+23:04:06.758 INFO  org.example.TaskManager - Initializing test questions
+23:04:06.799 INFO  org.example.TaskManager - Successfully initialized 3 tests
+23:04:13.712 INFO  org.example.TaskManager - Test system starts
+23:04:15.681 INFO  org.example.TaskManager - User started doing test on the topic: История
+23:04:19.251 WARN  org.example.TaskManager - User choose incorrect answer: 2. Correct answer: 3
+23:04:21.569 WARN  org.example.TaskManager - User choose incorrect answer: 22. Correct answer: 1
+23:04:29.504 WARN  org.example.TaskManager - User choose incorrect answer: 2. Correct answer: 1
+23:04:29.505 INFO  org.example.TaskManager - User get 0 from 40
+23:04:29.505 INFO  org.example.TaskManager - User get bad mark
+23:04:36.004 INFO  org.example.App - Program ended
+12:53:17.046 INFO  org.example.App - Program starts
+12:53:17.093 INFO  org.example.TaskManager - Initializing test questions
+12:53:17.131 INFO  org.example.TaskManager - Successfully initialized 3 tests
+12:53:19.437 INFO  org.example.TaskManager - Test system starts
+12:53:21.522 INFO  org.example.TaskManager - User started doing test on the topic: История
+12:53:25.377 INFO  org.example.TaskManager - User choose right answer number: 3. User gets 10 points
+12:53:31.354 INFO  org.example.TaskManager - User choose right answer number: 1. User gets 15 points
+12:53:35.512 WARN  org.example.TaskManager - User choose incorrect answer: 3. Correct answer: 1
+12:53:35.513 INFO  org.example.TaskManager - User get 25 from 40
+12:53:35.513 INFO  org.example.TaskManager - User get normal mark
+22:26:41.400 INFO  org.example.App - Program starts
+22:26:41.426 INFO  org.example.TaskManager - Initializing test questions
+22:26:41.448 INFO  org.example.TaskManager - Successfully initialized 3 tests
+15:44:54.944 INFO  org.example.App - Program starts
+15:44:54.997 INFO  org.example.TaskManager - Initializing test questions
+15:44:55.000 INFO  org.example.TaskManager - Successfully initialized 3 tests
+15:45:25.219 INFO  org.example.TaskManager - Test system starts
+15:46:20.169 INFO  org.example.TaskManager - User started doing test on the topic: История
+15:46:27.694 INFO  org.example.TaskManager - User choose right answer number: 3. User gets 10 points
+15:46:42.590 WARN  org.example.TaskManager - User choose incorrect answer: 4. Correct answer: 1
+15:47:04.209 INFO  org.example.App - Program starts
+15:47:04.220 INFO  org.example.TaskManager - Initializing test questions
+15:47:04.223 INFO  org.example.TaskManager - Successfully initialized 3 tests
+15:47:26.806 INFO  org.example.TaskManager - Test system starts
+15:47:30.075 ERROR org.example.TaskManager - The entered character is not a number!
+15:47:38.787 INFO  org.example.TaskManager - Test system starts
+15:47:41.748 INFO  org.example.TaskManager - User started doing test on the topic: История
+15:47:42.671 WARN  org.example.TaskManager - User choose incorrect answer: 1. Correct answer: 3
+15:47:43.529 INFO  org.example.TaskManager - User choose right answer number: 1. User gets 15 points
+15:47:45.467 WARN  org.example.TaskManager - User choose incorrect answer: 5. Correct answer: 1
+15:47:45.468 INFO  org.example.TaskManager - User get 15 from 40
+15:47:45.468 INFO  org.example.TaskManager - User get bad mark
+15:48:16.373 INFO  org.example.App - Program ended

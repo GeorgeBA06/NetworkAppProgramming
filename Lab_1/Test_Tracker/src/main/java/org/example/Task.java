@@ -9,7 +9,7 @@ public class Task {
     private int userScore;
     private int totalScore;
 
-    Task(String taskName){
+    public Task(String taskName){
         this.taskName = taskName;
         this.questions = new ArrayList<>();
         this.totalScore = 0;
