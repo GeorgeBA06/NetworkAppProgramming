@@ -16,4 +16,10 @@ public class Electronic extends Product{
     public void setGuaranteeTime(int guaranteeTime) {
         this.guaranteeTime = guaranteeTime;
     }
+
+    @Override
+    public String toString(){
+        return super.toString() + String.format(", гарантия %d дн. ", guaranteeTime);
+    }
+
 }

@@ -2,7 +2,7 @@ package org.example;
 
 import java.io.Serializable;
 
-public class Product implements Serializable {
+public abstract class Product implements Serializable {
     private String name;
     private int price;
     private final Category category;
@@ -42,15 +42,16 @@ public class Product implements Serializable {
     public void setName(String name) {
         this.name = name;
     }
-//
-//    @Override
-//    public String toString() {
-//        StringBuilder sb = new StringBuilder();
-//        sb.append("Товары на складе: \n");
-//        return
-//    }
 
-    public void printPrettyString() {
-        System.out.println("Название" + name);
+    @Override
+    public String toString(){
+        return String.format("%s (категория: %s, цена: %d, количество: %d)",
+                name,
+                category.getDisplayName(),
+                price,
+                quantity
+        );
     }
+
+
 }

@@ -14,24 +14,6 @@ public class Shop {
         productList.add(product);
     }
 
-    public static void addFood(String name, int price, Category category, int quantity,
-                               LocalDate manufacturedDate, int shelfLifeDays) {
-        Food food = new Food(name, price, category, quantity, manufacturedDate, shelfLifeDays);
-        productList.add(food);
-    }
-
-    public static void addElectronics(String name,int price, Category category, int quantity,int guaranteeDays){
-        Electronic electronic = new Electronic(name, price, category, quantity, guaranteeDays);
-        productList.add(electronic);
-    }
-
-    public static void addClothes(String name,int price, Category category, int quantity, String brand){
-        Clothes clothes = new Clothes(name,price,category,quantity,brand);
-        productList.add(clothes);
-    }
-
-
-
     public static List<Product> getProductList(){
         return productList;
     }
@@ -73,7 +55,7 @@ public class Shop {
         long foodCount = productList.stream().filter(product -> product instanceof Food).count();
         long electronicsCount = productList.stream().filter(product -> product instanceof Electronic).count();
 
-        long allItemQuantity = productList.stream().mapToInt(Product::getQuantity).count();
+        long allItemQuantity = productList.stream().mapToInt(Product::getQuantity).sum();
 
         double averagePriceInShop = productList.stream().mapToInt(Product::getPrice).average().orElse(0);
 
@@ -85,7 +67,7 @@ public class Shop {
     }
 
     public static void sortByProductName(){
-        productList.sort(Comparator.comparing(Product::getName));
+        productList.sort(Comparator.comparing(Product::getName, String.CASE_INSENSITIVE_ORDER));
     }
 
     public static void sortByProductPrice(){
@@ -99,7 +81,7 @@ public class Shop {
                 List<Product> foodList = productList.stream().filter(product -> product instanceof Food).toList();
                 for(Product product : foodList){
                     System.out.println("1. " + product.getName() + " стоимость: " + product.getPrice() +
-                            " количество единиц товара: " + product.getPrice());
+                            " количество единиц товара: " + product.getQuantity());
                 }
             }
             case 2 ->{
@@ -107,7 +89,7 @@ public class Shop {
                 List<Product> foodList = productList.stream().filter(product -> product.getCategory().equals(Category.CLOTHES)).toList();
                 for(Product product : foodList){
                     System.out.println("1. " + product.getName() + " стоимость: " + product.getPrice() +
-                            " количество единиц товара: " + product.getPrice());
+                            " количество единиц товара: " + product.getQuantity());
                 }
             }
             case 3 ->{
@@ -115,7 +97,7 @@ public class Shop {
                 List<Product> electronicList = productList.stream().filter(product -> product.getCategory().equals(Category.ELECTRONICS)).toList();
                 for(Product product : electronicList){
                     System.out.println("1. " + product.getName() + " стоимость: " + product.getPrice() +
-                            " количество единиц товара: " + product.getPrice());
+                            " количество единиц товара: " + product.getQuantity());
                 }
             }
 

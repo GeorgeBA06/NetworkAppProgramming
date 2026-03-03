@@ -50,7 +50,9 @@ public class Food extends Product{
     @Override
     public String toString() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
-        return String.format(getName() + " " + getCategory() + " | Произведен: " + manufacturedDate.format(formatter) +
-                " | Годен до: " + expiredDate.format(formatter) + " | " + getStatus() + " Цена: " + getPrice());
+        return super.toString() + String.format(", произведен: %s, годен до: %s, статус: %s",
+                manufacturedDate.format(formatter),
+                expiredDate.format(formatter),
+                getStatus());
     }
 }

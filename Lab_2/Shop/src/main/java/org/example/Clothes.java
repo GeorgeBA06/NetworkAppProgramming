@@ -17,4 +17,11 @@ public class Clothes extends Product{
         this.brand = brand;
     }
 
+    @Override
+    public String toString(){
+        return super.toString() + String.format(
+                " , бренд: %s", brand
+        );
+    }
+
 }

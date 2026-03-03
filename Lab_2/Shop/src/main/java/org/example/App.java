@@ -24,11 +24,11 @@ while(true){
             7. Редактировать гарантию
             8. Поиск по названию
             9. Фильтр по категории
-            10. Фильтр по цене //
-            11. Фильтр по диапазону цен //
+            10. Фильтр по цене
+            11. Фильтр по диапазону цен
             12. Сортировка по названию
             13. Сортировка по цене
-            14. Статистика по категориям /
+            14. Статистика по категориям
             15. Сохранение данных
             16. Загрузка данных
             0. Выход из программы
@@ -95,7 +95,12 @@ while(true){
                 }
                 System.out.println("Введите номер товара, который хотите удалить:");
                 int choice = scan.scanInt();
-                Shop.remove(productList.get(choice));
+                if(choice >= 0 && choice <= productList.size()){
+                    Shop.remove(productList.get(choice));
+                }else{
+                    System.out.println("Вы ввели неверный номер товара");
+                }
+
             }else {
                 System.out.println("Вы ввели неправильный пароль");
             }
@@ -203,7 +208,11 @@ while(true){
             FileManager.saveToFile(Shop.getProductList());
         }
         case 16->{
-            FileManager.loadFromFile();
+            List<Product> loaded = FileManager.loadFromFile();
+            if (!loaded.isEmpty()) {
+                Shop.getProductList().clear();
+                Shop.getProductList().addAll(loaded);
+            }
         }
     }
 }
