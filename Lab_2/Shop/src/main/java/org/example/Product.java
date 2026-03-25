@@ -43,6 +43,13 @@ public abstract class Product implements Serializable {
         this.name = name;
     }
 
+    public double getEffectivePrice(){
+        if(this instanceof Discountable){
+            return ((Discountable) this).getDiscountedPrice(this.price);
+        }
+        return this.price;
+    }
+
     @Override
     public String toString(){
         return String.format("%s (категория: %s, цена: %d, количество: %d)",

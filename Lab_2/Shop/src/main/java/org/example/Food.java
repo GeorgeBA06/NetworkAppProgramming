@@ -5,7 +5,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 
-public class Food extends Product{
+public class Food extends Product implements Expirable, Discountable{
     private LocalDate manufacturedDate;
     private LocalDate expiredDate;
 
@@ -26,8 +26,14 @@ public class Food extends Product{
         return expiredDate;
     }
 
+    @Override
     public boolean isExpired(){
         return LocalDate.now().isAfter(expiredDate);
+    }
+
+    @Override
+    public LocalDate getExpirationDate(){
+        return expiredDate;
     }
 
     public long daysUntilExpire(){
@@ -46,6 +52,16 @@ public class Food extends Product{
             return "НОРМАЛЬНЫЙ";
         }
     }
+
+    @Override
+    public double getDiscount(){
+        long days = daysUntilExpire();
+        if (days <= 0) return 100;
+        if(days <= 1) return 50;
+        if(days <= 3) return 30;
+        return 0;
+    }
+
 
     @Override
     public String toString() {
