@@ -13,6 +13,7 @@ public class Shop {
     private static List<Product> productList = new ArrayList<>();
     private static LinkedList<PriceChangeLogEntry> priceLog = new LinkedList<>();
     private static TreeMap<LocalDate, List<Food>> expirationMap = new TreeMap<>();
+    private static Map<Product, Double> discountMap = new HashMap<>();
     private static PriorityQueue<Product> top3Queue = new PriorityQueue<>(
             (p1, p2) -> Double.compare(p2.getEffectivePrice(), p1.getEffectivePrice())
     );
@@ -28,6 +29,9 @@ public class Shop {
     public static void add(Product product){
 
         productList.add(product);
+        if (product instanceof Food) {
+            addToExpirationMap((Food) product);
+        }
         updateTop3Queue();
         logger.info("Добавлен товар: {} (категория: {}, цена: {}, количество: {})",
                 product.getName(), product.getCategory().getDisplayName(),
@@ -40,8 +44,11 @@ public class Shop {
     }
 
     public static void remove(Product product){
-
         productList.remove(product);
+        if (product instanceof Food) {
+            removeFromExpirationMap((Food) product);
+        }
+        discountMap.remove(product);
         updateTop3Queue();
         logger.warn("Удалён товар: {} (категория: {})", product.getName(), product.getCategory().getDisplayName());
     }
@@ -184,20 +191,19 @@ public class Shop {
         };
     }
 
-    public static void setDiscount(Product product, double discount){
-        if(product instanceof Discountable){
-            if(product instanceof Clothes){
-                ((Clothes) product).setDiscount(discount);
-            }else if (product instanceof Electronic){
-                ((Electronic) product).setDiscount(discount);
-            }else{
-                System.out.println("Товар не поддерживает скидку(продукты питания имеют автоматическую скидку по сроку годности)");
-                logger.warn("Попытка установить скидку на товар {}, который не поддерживает скидки (не Clothes и не Electronic)", product.getName());
-            }
+    public static void setDiscount(Product product, double discount) {
+        if (product instanceof Electronic || product instanceof Clothes) {
+            discountMap.put(product, discount);
             updateTop3Queue();
-        }else {
-            System.out.println("Товар не поддерживает скидку.");
+            logger.info("Установлена скидка {}% на товар {}", discount, product.getName());
+        } else {
+            System.out.println("Товар не поддерживает скидку (скидка только для одежды и электроники)");
+            logger.warn("Попытка установить скидку на товар {}, который не поддерживает скидки", product.getName());
         }
+    }
+
+    public static double getDiscount(Product product) {
+        return discountMap.getOrDefault(product, 0.0);
     }
 
     public static void showPriceLog(){
@@ -211,4 +217,33 @@ public class Shop {
     public static void sortByProductCategory(){
         productList.sort(Comparator.comparing(Product::getCategory));
     }
+
+    private static void addToExpirationMap(Food food) {
+        LocalDate expDate = food.getExpirationDate();
+        expirationMap.computeIfAbsent(expDate, k -> new ArrayList<>()).add(food);
+    }
+
+    private static void removeFromExpirationMap(Food food) {
+        LocalDate expDate = food.getExpirationDate();
+        List<Food> list = expirationMap.get(expDate);
+        if (list != null) {
+            list.remove(food);
+            if (list.isEmpty()) {
+                expirationMap.remove(expDate);
+            }
+        }
+    }
+
+    public static void refreshExpirationMap() {
+        expirationMap.clear();
+        productList.stream()
+                .filter(p -> p instanceof Food)
+                .map(p -> (Food) p)
+                .forEach(food -> {
+                    LocalDate expDate = food.getExpirationDate();
+                    expirationMap.computeIfAbsent(expDate, k -> new ArrayList<>()).add(food);
+                });
+    }
 }
+
+

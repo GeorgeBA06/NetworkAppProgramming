@@ -64,9 +64,7 @@ while(true){
             int someDays = scan.scanInt();
             System.out.println("Введите количество товара, который вы хотите добавить");
             int quantity = scan.scanInt();
-            System.out.println("Введите скидку в процентах (0-100):");
-            double discount = scan.scanRangeInt(0,100);
-            Shop.add(new Electronic(name, price, Category.ELECTRONICS, quantity, someDays, discount));
+            Shop.add(new Electronic(name, price, Category.ELECTRONICS, quantity, someDays));
 
         }
         case 3 ->{
@@ -81,8 +79,7 @@ while(true){
             System.out.println("Введите размер (XS, S, M, L, XL, XXL):");
             String size = scan.scanString();
             System.out.println("Введите скидку в процентах (0-100):");
-            double discount = scan.scanRangeInt(0, 100);
-            Shop.add(new Clothes(name, price, Category.CLOTHES, quantity, brandName, size, discount));
+            Shop.add(new Clothes(name, price, Category.CLOTHES, quantity, brandName, size));
         }
         case 4 ->{
             List<Product> productList = Shop.getProductList();
@@ -279,6 +276,7 @@ while(true){
                 Shop.getProductList().clear();
                 Shop.getProductList().addAll(loaded);
                 Shop.refreshTop3();
+                Shop.refreshExpirationMap();
             }
         }
     }
