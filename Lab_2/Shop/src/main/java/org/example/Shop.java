@@ -1,10 +1,8 @@
 package org.example;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -13,11 +11,24 @@ import java.util.stream.Collectors;
 public class Shop {
     private static final Logger logger = LogManager.getLogger(Shop.class);
     private static List<Product> productList = new ArrayList<>();
-    private static List<PriceChangeLogEntry> priceLog = new ArrayList<>();
+    private static LinkedList<PriceChangeLogEntry> priceLog = new LinkedList<>();
+    private static TreeMap<LocalDate, List<Food>> expirationMap = new TreeMap<>();
+    private static PriorityQueue<Product> top3Queue = new PriorityQueue<>(
+            (p1, p2) -> Double.compare(p2.getEffectivePrice(), p1.getEffectivePrice())
+    );
+
+    private static void updateTop3Queue() {
+        top3Queue.clear();
+        productList.stream()
+                .sorted(Comparator.comparingDouble(Product::getEffectivePrice).reversed())
+                .limit(3)
+                .forEach(top3Queue::add);
+    }
 
     public static void add(Product product){
 
         productList.add(product);
+        updateTop3Queue();
         logger.info("Добавлен товар: {} (категория: {}, цена: {}, количество: {})",
                 product.getName(), product.getCategory().getDisplayName(),
                 product.getPrice(), product.getQuantity());
@@ -31,6 +42,7 @@ public class Shop {
     public static void remove(Product product){
 
         productList.remove(product);
+        updateTop3Queue();
         logger.warn("Удалён товар: {} (категория: {})", product.getName(), product.getCategory().getDisplayName());
     }
 
@@ -38,20 +50,25 @@ public class Shop {
         int oldPrice = product.getPrice();
         priceLog.add(new PriceChangeLogEntry(product.getName(), product.getPrice(), newPrice));
         product.setPrice(newPrice);
+        updateTop3Queue();
         logger.info("Изменена цена товара: {} с {} на {}", product.getName(), oldPrice, newPrice);
     }
 
     public static List<Product> findProductsByName(String productsName){
-       return productList.stream()
+        List<Product> result = productList.stream()
                 .filter(product -> product.getName().equalsIgnoreCase(productsName))
                 .collect(Collectors.toList());
-
+        logger.debug("Поиск товаров по имени '{}': найдено {} товаров", productsName, result.size());
+        return result;
     }
 
     public static Optional<Product> findFirstProductByName(String productName){
-        return productList.stream()
+        Optional<Product> result = productList.stream()
                 .filter(product -> product.getName().equalsIgnoreCase(productName))
                 .findFirst();
+        logger.debug("Поиск первого товара по имени '{}': {}", productName,
+                result.isPresent() ? result.get().getName() : "не найден");
+        return result;
     }
 
     public static List<Product> filterByPrice(int price){
@@ -63,9 +80,11 @@ public class Shop {
     }
 
     public static List<Product> filterByRangePrice(int minValue, int maxValue){
-        return productList.stream()
+        List<Product> filtered = productList.stream()
                 .filter(product -> product.getPrice() > minValue && product.getPrice() < maxValue)
                 .collect(Collectors.toList());
+        logger.debug("Фильтр по диапазону цен ({}, {}): найдено {} товаров", minValue, maxValue, filtered.size());
+        return filtered;
     }
 
     public static List<Product> filterProducts(Category category,
@@ -84,16 +103,21 @@ public class Shop {
                 .collect(Collectors.toList());
     }
 
-    public static List<Product> getTop3Expensive(){
-        return productList.stream()
+    public static List<Product> getTop3Expensive() {
+        logger.debug("Получены топ-3 самых дорогих товара (со скидками)");
+        return top3Queue.stream()
                 .sorted(Comparator.comparingDouble(Product::getEffectivePrice).reversed())
-                .limit(3)
                 .collect(Collectors.toList());
+    }
+
+    public static void refreshTop3() {
+        updateTop3Queue();
     }
 
 
 
     public static void showStatistics(){
+        logger.info("Вывод статистики магазина");
         long clothesCount = productList.stream().filter(product -> product instanceof Clothes).count();
         long foodCount = productList.stream().filter(product -> product instanceof Food).count();
         long electronicsCount = productList.stream().filter(product -> product instanceof Electronic).count();
@@ -121,10 +145,12 @@ public class Shop {
     }
 
     public static void sortByProductName(){
+        logger.debug("Сортировка товаров по имени");
         productList.sort(Comparator.comparing(Product::getName, String.CASE_INSENSITIVE_ORDER));
     }
 
     public static void sortByProductPrice(){
+        logger.debug("Сортировка товаров по цене");
         productList.sort(Comparator.comparing(Product::getPrice));
     }
 
@@ -166,7 +192,9 @@ public class Shop {
                 ((Electronic) product).setDiscount(discount);
             }else{
                 System.out.println("Товар не поддерживает скидку(продукты питания имеют автоматическую скидку по сроку годности)");
+                logger.warn("Попытка установить скидку на товар {}, который не поддерживает скидки (не Clothes и не Electronic)", product.getName());
             }
+            updateTop3Queue();
         }else {
             System.out.println("Товар не поддерживает скидку.");
         }

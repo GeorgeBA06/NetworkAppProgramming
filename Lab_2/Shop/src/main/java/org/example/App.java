@@ -92,33 +92,39 @@ while(true){
                 productList.forEach(System.out::println);
             }
         }
-        case 5 ->{
+        case 5 -> {
             System.out.println("Введите пароль!");
             String password = scan.scanString();
             if (AuthenticationManager.checkPass(password)) {
-                System.out.println("Список товаров:");
                 List<Product> productList = Shop.getProductList();
-                for (int i = 0; i < productList.size(); i++){
-                    System.out.println(i + ". " + productList.get(i).getName() + " категория " + productList.get(i).getCategory() );
+                if (productList.isEmpty()) {
+                    System.out.println("В магазине нет товаров для удаления.");
+                    break;
+                }
+                System.out.println("Список товаров:");
+                for (int i = 0; i < productList.size(); i++) {
+                    System.out.println(i + ". " + productList.get(i).getName() + " категория " + productList.get(i).getCategory());
                 }
                 System.out.println("Введите номер товара, который хотите удалить:");
                 int choice = scan.scanInt();
-                if(choice >= 0 && choice <= productList.size()){
+                if (choice >= 0 && choice < productList.size()) {
                     Shop.remove(productList.get(choice));
-                }else{
+                } else {
                     System.out.println("Вы ввели неверный номер товара");
                 }
-
-            }else {
+            } else {
                 System.out.println("Вы ввели неправильный пароль");
             }
-
         }
         case 6->{ System.out.println("Введите пароль!");
             String password = scan.scanString();
             if (AuthenticationManager.checkPass(password)) {
                 System.out.println("Список товаров:");
                 List<Product> productList = Shop.getProductList();
+                if (productList.isEmpty()) {
+                    System.out.println("В магазине нет товаров для изменения цены.");
+                    break;
+                }
                 for (int i = 0; i < productList.size(); i++) {
                     System.out.println(i + ". " + productList.get(i).getName() + " категория " + productList.get(i).getCategory());
                 }
@@ -139,6 +145,7 @@ while(true){
             List<Product> productList = Shop.getProductList();
             if(productList.isEmpty()){
                 System.out.println("В магазине отсутствует товар");
+                break;
             }else {
                 for(Product product : productList){
                     if(product instanceof Electronic electronic){
@@ -205,7 +212,12 @@ while(true){
             System.out.println("Введите минимальную цену (со скидкой):");
             int minPrice = scan.scanInt();
             System.out.println("Введите максимальную цену:");
-            int maxPrice = scan.scanInt();
+            int maxPrice = scan.scanInt();if (minPrice > maxPrice) {
+                int temp = minPrice;
+                minPrice = maxPrice;
+                maxPrice = temp;
+                System.out.println("Минимальная цена больше максимальной, значения автоматически переставлены.");
+            }
             System.out.println("Фильтр по сроку годности (1 – только просроченные, 2 – только свежие, 0 – без фильтра):");
             int expChoice = scan.scanRangeInt(0, 2);
             Boolean expiredStatus = switch (expChoice) {
@@ -234,6 +246,12 @@ while(true){
             int minValue = scan.scanRangeInt(0, 10000);
             System.out.println("Введите максимальную стоимость товара, который хотите найти:");
             int maxValue = scan.scanRangeInt(0,10000);
+            if (minValue > maxValue) {
+                int temp = minValue;
+                minValue = maxValue;
+                maxValue = temp;
+                System.out.println("Минимальная цена больше максимальной, значения автоматически переставлены.");
+            }
             if(!Shop.getProductList().isEmpty()){
                 Shop.filterByRangePrice(minValue,maxValue).forEach(System.out::println);
             }else{
@@ -260,6 +278,7 @@ while(true){
             if (!loaded.isEmpty()) {
                 Shop.getProductList().clear();
                 Shop.getProductList().addAll(loaded);
+                Shop.refreshTop3();
             }
         }
     }
